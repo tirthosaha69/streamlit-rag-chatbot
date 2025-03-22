@@ -30,7 +30,7 @@ st.set_page_config(page_title="AI Chatbot", page_icon="🤖", layout="wide")
 with st.sidebar:
     st.title("🔧 Settings")
     st.write("Customize your chatbot experience here.")
-    api_key = st.text_input("🔑 Enter API Key:", type="password")
+    api_key = st.text_input("🔑 Enter HuggingFace API Key:", type="password")
     uploaded_file = st.file_uploader("📂 Upload a PDF", type=["pdf"])
     processed = False
     file_path = None
