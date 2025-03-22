@@ -7,11 +7,9 @@ import os
 DB_FAISS_PATH = "vectorstore"
 huggingface_repo_id = "mistralai/Mistral-7B-Instruct-v0.3"
 
-# ✅ Load LLM function
 def load_llm(api_key):
     return HuggingFaceEndpoint(model=huggingface_repo_id, huggingfacehub_api_token=api_key)
 
-# ✅ Custom Prompt
 custom_prompt_template = """
 Use the pieces of information provided in the context to answer the user's question.
 If you don't know the answer, just say that you don't know. Don't try to make up an answer.
@@ -26,12 +24,10 @@ Start the answer directly. No small talk, please.
 def set_custom_prompt(template):
     return PromptTemplate(template=template, input_variables=["context", "question"])
 
-# ✅ Load FAISS database inside the function
 def get_qa_chain(api_key):
     if not os.path.exists(DB_FAISS_PATH):
         raise ValueError(f"❌ FAISS database not found at {DB_FAISS_PATH}. Upload a PDF first.")
 
-    # Reload FAISS dynamically
     embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     db = FAISS.load_local(DB_FAISS_PATH, embeddings=embedding_model, allow_dangerous_deserialization=True)  
 

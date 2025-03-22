@@ -6,7 +6,6 @@ from langchain.vectorstores import FAISS
 from langchain.embeddings import HuggingFaceEmbeddings
 
 VECTORSTORE_PATH = "vectorstore"
-# DATA_PATH = "data"  # Folder containing multiple PDFs
 
 def process_pdfs_in_folder(folder_path):
     """Processes all PDFs in a folder, creates embeddings, and saves the FAISS index."""
@@ -27,7 +26,6 @@ def process_pdfs_in_folder(folder_path):
         pdf_path = os.path.join(folder_path, pdf_file)
         print(f"📂 Processing: {pdf_path}")
 
-        # Load PDF
         loader = PyPDFLoader(pdf_path)
         documents = loader.load()
 
@@ -35,13 +33,11 @@ def process_pdfs_in_folder(folder_path):
             print(f"⚠️ Skipping empty or unreadable PDF: {pdf_file}")
             continue
 
-        # Split documents into chunks and add to the list
         all_texts.extend(text_splitter.split_documents(documents))
 
     if not all_texts:
         raise ValueError("❌ No valid text extracted from PDFs.")
 
-    # Generate embeddings and store in FAISS
     db = FAISS.from_documents(all_texts, embedding_model)
     db.save_local(VECTORSTORE_PATH)
 
